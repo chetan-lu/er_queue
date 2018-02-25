@@ -1,0 +1,57 @@
+<div class="row">
+	<!-- High priority -->
+	<div class="col-4" style="border-left: 0px solid; border-right: 1px solid; font-size: 12px;">
+		<div class="col-12" style="background: #ffb4bb; margin-bottom: 20px; padding-top: 5px; padding-bottom: 5px" >
+			<h5>High</h5>
+			Level 1 (Resuscitation) and Level 2(Emergent)
+		</div>
+		<!-- Patient flag -->
+		<div class="card" style="margin-bottom: 5px;" ng-repeat="patient in arr = (patients | orderBy:['priority','timestamp'])" ng-if="patient.priority < 3 && patient.priority > 0">
+			<div class="card-header bg-danger">
+				<b>{{priority_text[patient.priority - 1]}}</b>
+			</div>
+			<div class="card-body">
+				<h6 class="card-title">{{patient.name}} <span class="badge badge-dark ">{{patient.sex}}, {{patient.age}}</span>
+				</h6>
+				<a href="#!/update/{{patient.timestamp}}" class="badge badge-primary">Update</a>
+			</div>
+		</div>
+		<!-- Patient flag end here -->
+	</div>
+	<!-- Medium priority -->
+	<div class="col-4" style="border-right: 1px solid;font-size: 12px;">
+		<div class="col-12" style="background: #fde089; margin-bottom: 20px; padding-top: 5px; padding-bottom: 5px">
+			<h5>Medium</h5>
+			Level 2 (Urgent) and Level 4 (Semi-urgent)
+		</div>
+		<!-- Patient flag -->
+		<div class="card" style="margin-bottom: 5px;" ng-repeat="patient in arr = (patients | orderBy:['priority','timestamp'])" ng-if="patient.priority == 3 || patient.priority == 4">
+			<div class="card-header bg-warning">
+				<b>{{priority_text[patient.priority - 1]}}</b>
+			</div>
+			<div class="card-body">
+				<h6 class="card-title">{{patient.name}} <span class="badge badge-dark ">{{patient.sex}}, {{patient.age}}</span></h6>
+				<a href="#" class="badge badge-primary">Update</a>
+			</div>
+		</div>
+		<!-- Patient flag end here -->
+	</div>
+	<!-- Low priority -->
+	<div class="col-4" style="border-right: 0px solid;font-size: 12px;">
+		<div class="col-12 text-white" style="background: #585858; margin-bottom: 20px; padding-top: 5px; padding-bottom: 5px">
+			<h5>Low</h5>
+			Level 5 (Non-urgent)
+		</div>
+		<!-- Patient flag -->
+		<div class="card" style="margin-bottom: 5px;" ng-repeat="patient in arr = (patients | orderBy:['priority','timestamp'])" ng-if="patient.priority == 5">
+			<div class="card-header bg-dark text-white">
+				<b>{{priority_text[patient.priority - 1]}}</b>
+			</div>
+			<div class="card-body">
+				<h6 class="card-title">{{patient.name}} <span class="badge badge-dark ">{{patient.sex}}, {{patient.age}}</span></h6>
+				<a href="#" class="badge badge-primary">Update</a>
+			</div>
+		</div>
+		<!-- Patient flag end here -->
+	</div>
+</div>
