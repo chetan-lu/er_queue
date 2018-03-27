@@ -1,0 +1,20 @@
+<div class="row">
+	<!-- Not yet triaged -->
+	<div class="col-12" style="border-right: 0px solid;font-size: 12px;">
+		<div class="col-12 text-white" style="background: #585858; margin-bottom: 20px; padding-top: 5px; padding-bottom: 5px">
+			<h5>Not triaged</h5>
+		</div>
+		<!-- Patient flag -->
+		<div class="card" style="margin-bottom: 5px;" ng-repeat="patient in arr = (patients | orderBy:['priority','timestamp'])" ng-if="patient.priority == -1">
+			<div class="card-body">
+				<h6 class="card-title">{{patient.name}} <span class="badge badge-dark ">{{patient.sex}}, {{patient.age}}</span></h6>
+				<a href="" ng-click='triage(patient._id, 1)' class="badge badge-pill badge-primary">Level 1</a>
+				<a href="" ng-click='triage(patient._id, 2)' class="badge badge-pill badge-primary">Level 2</a>
+				<a href="" ng-click='triage(patient._id, 3)' class="badge badge-pill badge-primary">Level 3</a>
+				<a href="" ng-click='triage(patient._id, 4)' class="badge badge-pill badge-primary">Level 4</a>
+				<a href="" ng-click='triage(patient._id, 5)' class="badge badge-pill badge-primary">Level 5</a>
+			</div>
+		</div>
+		<!-- Patient flag end here -->
+	</div>
+</div>
