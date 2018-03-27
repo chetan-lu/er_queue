@@ -5,6 +5,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var mongo = require('mongodb');
 const MongoClient = mongo.MongoClient;
+var Server = require('mongodb').Server;
 
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
@@ -15,13 +16,23 @@ var io = require('socket.io')(server);
 const url = 'mongodb://localhost:27017';
 const dbName = 'pq';
 
+var mongoClient = new MongoClient(new Server('localhost', 27017));
 var m_con;
-MongoClient.connect(url, function(err, client) {
+MongoClient.connect(url, {
+	poolSize: 50
+}, function(err, client) {
 	console.log("Connected to MongoDB instance successfully");
 	const db = client.db(dbName);
 	m_con = db;
 });
-
+var m_con_reader;
+MongoClient.connect(url, {
+	poolSize: 50
+}, function(err, client) {
+	console.log("Connected to MongoDB instance successfully");
+	const db = client.db(dbName);
+	m_con_reader = db;
+});
 //Setup
 app.use(bodyParser.urlencoded({
 	extended: true
@@ -47,7 +58,7 @@ router.post('/register', function(req, res) {
 
 // To retrive queue
 router.get('/queue', function(req, res) {
-	m_con.collection('patients').find({}).toArray(function(err, docs) {
+	m_con_reader.collection('patients').find({}).toArray(function(err, docs) {
 		res.json(docs);
 	});
 });
@@ -55,14 +66,40 @@ router.get('/queue', function(req, res) {
 // To update
 router.post('/patient', function(req, res) {
 	var id = req.body._id;
-	var level = req.body.priority;
-	m_con.collection('patients').updateOne({_id: new mongo.ObjectID(id)}, {$set: {priority: level}}, function(err, r) {
-	io.sockets.emit('broadcast', 'update_queue');
+	var payload = JSON.parse(req.body.payload);
+	delete payload._id;
+
+
+	m_con.collection('patients').updateOne({
+		_id: new mongo.ObjectID(id)
+	}, {
+		$set: payload
+	}, function(err, r) {
+		io.sockets.emit('broadcast', 'update_queue');
 	});
+
+	client.close();
 
 });
 
+router.post('/delete_patient', function(req, res) {
+	var id = req.body._id;
+	m_con.collection('patients').remove({
+		_id: new mongo.ObjectID(id)
+	});
+	io.sockets.emit('broadcast', 'update_queue');
+});
 
+// get patient details
+
+router.get('/patient', function(req, res) {
+	var id = req.query.id;
+	m_con.collection('patients').find({
+		_id: new mongo.ObjectID(id)
+	}).toArray(function(err, docs) {
+		res.json(docs);
+	});
+});
 
 // API prefix
 app.use('/api', router);
@@ -70,4 +107,3 @@ app.use('/api', router);
 app.use(express.static(__dirname));
 
 server.listen(8080);
-console.log('Closing mongodb client');
