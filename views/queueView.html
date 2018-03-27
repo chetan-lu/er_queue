@@ -13,7 +13,10 @@
 			<div class="card-body">
 				<h6 class="card-title">{{patient.name}} <span class="badge badge-dark ">{{patient.sex}}, {{patient.age}}</span>
 				</h6>
-				<a href="#!/update/{{patient.timestamp}}" class="badge badge-primary">Update</a>
+				Registered {{elapsed(patient.timestamp)}} minutes ago <br>({{formatTimestamp(patient.timestamp)}})<br><br>
+				<a href="#!/update/{{patient._id}}" class="badge badge-primary">Update</a>
+				<a ng-click="sent_patient(patient._id)" href="" class="badge badge-warning">Sent to treatment zone</a>
+				<br>
 			</div>
 		</div>
 		<!-- Patient flag end here -->
@@ -22,7 +25,7 @@
 	<div class="col-4" style="border-right: 1px solid;font-size: 12px;">
 		<div class="col-12" style="background: #fde089; margin-bottom: 20px; padding-top: 5px; padding-bottom: 5px">
 			<h5>Medium</h5>
-			Level 2 (Urgent) and Level 4 (Semi-urgent)
+			Level 3 (Urgent) and Level 4 (Semi-urgent)
 		</div>
 		<!-- Patient flag -->
 		<div class="card" style="margin-bottom: 5px;" ng-repeat="patient in arr = (patients | orderBy:['priority','timestamp'])" ng-if="patient.priority == 3 || patient.priority == 4">
@@ -31,7 +34,11 @@
 			</div>
 			<div class="card-body">
 				<h6 class="card-title">{{patient.name}} <span class="badge badge-dark ">{{patient.sex}}, {{patient.age}}</span></h6>
-				<a href="#" class="badge badge-primary">Update</a>
+				Registered {{elapsed(patient.timestamp)}} minutes ago <br>({{formatTimestamp(patient.timestamp)}})<br><br>
+				<a href="#!/update/{{patient._id}}" class="badge badge-primary">Update</a>
+				<a ng-click="sent_patient(patient._id)" href="" class="badge badge-warning">Sent to treatment zone</a>
+				<br>
+
 			</div>
 		</div>
 		<!-- Patient flag end here -->
@@ -49,7 +56,10 @@
 			</div>
 			<div class="card-body">
 				<h6 class="card-title">{{patient.name}} <span class="badge badge-dark ">{{patient.sex}}, {{patient.age}}</span></h6>
-				<a href="#" class="badge badge-primary">Update</a>
+				Registered {{elapsed(patient.timestamp)}} minutes ago <br>({{formatTimestamp(patient.timestamp)}})<br><br>
+				<a href="#!/update/{{patient._id}}" class="badge badge-primary">Update</a>
+				<a ng-click="sent_patient(patient._id)" href="" class="badge badge-warning">Sent to treatment zone</a>
+				<br>
 			</div>
 		</div>
 		<!-- Patient flag end here -->
